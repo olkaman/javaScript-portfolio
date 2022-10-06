@@ -35,6 +35,7 @@ const optTitleSelector = '.post-title';
 const optTitleListSelector = '.titles';
 const optArticleTagsSelector = '.post-tags .list';
 const optAuthorSelector = '.post-author';
+const optArticleAuthorSelector = '.post-author a';
 
 function generateTitleList(customSelector = '') {
   /* remove contents of titleList */
@@ -197,7 +198,7 @@ function authorClickHandler(event) {
 }
 
 function addClickListenersToAuthors() {
-  const linksToAuthors = document.querySelectorAll('.post-author a');
+  const linksToAuthors = document.querySelectorAll(optArticleAuthorSelector);
   for (let authorLink of linksToAuthors) {
     authorLink.addEventListener('click', authorClickHandler);
   }
