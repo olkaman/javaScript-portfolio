@@ -36,6 +36,7 @@ const optArticleSelector = '.post';
 const optTitleSelector = '.post-title';
 const optTitleListSelector = '.titles';
 const optArticleTagsSelector = '.post-tags .list';
+const optAuthorSelector = '.post-author';
 
 function generateTitleList(customSelector = '') {
   /* remove contents of titleList */
@@ -169,3 +170,19 @@ function addClickListenersToTags() {
 }
 
 addClickListenersToTags();
+
+function generateAuthors() {}
+
+//take all articles
+const articles = document.querySelectorAll(optArticleSelector);
+
+for (let article of articles) {
+  //for each article get author data from the attribute
+  const authorName = article.getAttribute('data-author');
+  //generate link
+  const authorLink = 'by <a href="#">' + authorName + '</a>';
+  //insert link to the wrapper
+  const authorWrapper = article.querySelector(optAuthorSelector);
+  authorWrapper.innerHTML = authorLink;
+}
+generateAuthors();
