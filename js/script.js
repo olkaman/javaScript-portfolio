@@ -36,6 +36,7 @@ const optTitleListSelector = '.titles';
 const optArticleTagsSelector = '.post-tags .list';
 const optAuthorSelector = '.post-author';
 const optArticleAuthorSelector = '.post-author a';
+const optTagsListSelector = '.sidebar .tags';
 
 function generateTitleList(customSelector = '') {
   /* remove contents of titleList */
@@ -80,6 +81,9 @@ function generateTitleList(customSelector = '') {
 generateTitleList();
 
 function generateTags() {
+  /* [NEW] create a new variable allTags with an empty array */
+  let allTags = [];
+
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
 
@@ -106,6 +110,12 @@ function generateTags() {
       /* add generated code to html variable */
       html += link;
 
+      /* [NEW] check if this link is NOT already in allTags */
+      if (allTags.indexOf(link) == -1) {
+        /* [NEW] add generated code to allTags array */
+        allTags.push(link);
+      }
+      console.log(allTags);
       /* END LOOP: for each tag */
     }
 
@@ -114,6 +124,12 @@ function generateTags() {
 
     /* END LOOP: for every article: */
   }
+  /* [NEW] find list of tags in right column */
+  const tagList = document.querySelector(optTagsListSelector);
+  console.log(tagList);
+
+  /* [NEW] add html from allTags to tagList */
+  tagList.innerHTML = allTags.join(' ');
 }
 
 generateTags();
