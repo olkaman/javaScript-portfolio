@@ -81,8 +81,8 @@ function generateTitleList(customSelector = '') {
 generateTitleList();
 
 function generateTags() {
-  /* [NEW] create a new variable allTags with an empty array */
-  let allTags = [];
+  /* [NEW] create a new variable allTags with an empty object */
+  let allTags = {};
 
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
@@ -111,9 +111,11 @@ function generateTags() {
       html += link;
 
       /* [NEW] check if this link is NOT already in allTags */
-      if (allTags.indexOf(link) == -1) {
-        /* [NEW] add generated code to allTags array */
-        allTags.push(link);
+      if (!allTags.hasOwnProperty(tag)) {
+        /* [NEW] add tag to allTags object */
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
       }
       console.log(allTags);
       /* END LOOP: for each tag */
@@ -126,10 +128,17 @@ function generateTags() {
   }
   /* [NEW] find list of tags in right column */
   const tagList = document.querySelector(optTagsListSelector);
-  console.log(tagList);
 
-  /* [NEW] add html from allTags to tagList */
-  tagList.innerHTML = allTags.join(' ');
+  /* create variable for all links HTML code */
+  let allTagsHTML = '';
+  /* START LOOP: for each tag in allTags */
+  for (let tag in allTags) {
+    allTagsHTML +=
+      '<li><a href="#">' + tag + ' (' + allTags[tag] + ')</a></li>';
+    console.log(allTagsHTML);
+  }
+  /* Add html from allTagsHTML to tagList*/
+  tagList.innerHTML = allTagsHTML;
 }
 
 generateTags();
