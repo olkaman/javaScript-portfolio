@@ -11,7 +11,9 @@ $font-text: 'Source Sans Pro', sans-serif;
 
 /* Global */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -60,7 +62,8 @@ a {
   flex: 2 0 0;
 }
 
-.sidebar, .posts {
+.sidebar,
+.posts {
   background: $color-light;
   margin-right: 10px;
   padding: 40px;
@@ -123,4 +126,28 @@ a {
   p {
     margin: 0 10px 0 0;
   }
+}
+
+.tag-size-1 {
+  font-size: 8px;
+}
+
+.tag-size-2 {
+  font-size: 12px;
+}
+
+.tag-size-3 {
+  font-size: 18px;
+}
+
+.tag-size-4 {
+  font-size: 26px;
+}
+
+.tag-size-5 {
+  font-size: 32px;
+}
+
+.sidebar .tags li {
+  display: inline;
 }

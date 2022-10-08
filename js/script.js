@@ -37,8 +37,8 @@ const optArticleTagsSelector = '.post-tags .list';
 const optAuthorSelector = '.post-author';
 const optArticleAuthorSelector = '.post-author a';
 const optTagsListSelector = '.sidebar .tags';
-const optCloudClassCount = 5;
-const optCloudClassPrefix = 'tag-size-';
+let optCloudClassCount = 5;
+let optCloudClassPrefix = 'tag-size-';
 
 function generateTitleList(customSelector = '') {
   /* remove contents of titleList */
@@ -99,7 +99,24 @@ function calculateTagsParams(tags) {
   return params;
 }
 
-function calculateTagClass(count, params) {}
+function calculateTagClass(count, params) {
+  const percentValue = (count * 100) / params.max;
+  console.log(percentValue);
+
+  if (percentValue < 20) {
+    optCloudClassCount = 1;
+  } else if (percentValue >= 20 && percentValue < 40) {
+    optCloudClassCount = 2;
+  } else if (percentValue >= 40 && percentValue < 60) {
+    optCloudClassCount = 3;
+  } else if (percentValue >= 60 && percentValue < 80) {
+    optCloudClassCount = 4;
+  } else {
+    optCloudClassCount = 5;
+  }
+
+  return optCloudClassPrefix + optCloudClassCount;
+}
 
 function generateTags() {
   /* [NEW] create a new variable allTags with an empty object */
@@ -150,20 +167,23 @@ function generateTags() {
   const tagList = document.querySelector(optTagsListSelector);
 
   const tagParams = calculateTagsParams(allTags);
-  console.log(tagParams);
+
   /* create variable for all links HTML code */
   let allTagsHTML = '';
-  const tagLinkHTML = calculateTagClass;
+
   /* START LOOP: for each tag in allTags */
   for (let tag in allTags) {
-    allTagsHTML +=
-      '<li><a href="#" class="' +
-      calculateTagClass +
+    const tagLinkHTML =
+      '<li><a href="#tag-' +
+      tag +
+      '" class="' +
+      calculateTagClass(allTags[tag], tagParams) +
       '">' +
       tag +
-      ' (' +
+      '(' +
       allTags[tag] +
-      ')</a></li>';
+      ') </a></li>';
+    allTagsHTML += tagLinkHTML;
   }
   /* Add html from allTagsHTML to tagList*/
   tagList.innerHTML = allTagsHTML;
@@ -222,7 +242,19 @@ function addClickListenersToTags() {
   /* END LOOP: for each link */
 }
 
+function addClickListenersToCloudTags() {
+  /* find all links to tags */
+  const linksToTags = document.querySelectorAll('.sidebar .tags a');
+  /* START LOOP: for each link */
+  for (let link of linksToTags) {
+    /* add tagClickHandler as event listener for that link */
+    link.addEventListener('click', tagClickHandler);
+  }
+  /* END LOOP: for each link */
+}
+
 addClickListenersToTags();
+addClickListenersToCloudTags();
 
 function generateAuthors() {
   //take all articles
