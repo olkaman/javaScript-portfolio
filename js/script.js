@@ -37,6 +37,8 @@ const optArticleTagsSelector = '.post-tags .list';
 const optAuthorSelector = '.post-author';
 const optArticleAuthorSelector = '.post-author a';
 const optTagsListSelector = '.sidebar .tags';
+const optCloudClassCount = 5;
+const optCloudClassPrefix = 'tag-size-';
 
 function generateTitleList(customSelector = '') {
   /* remove contents of titleList */
@@ -47,7 +49,6 @@ function generateTitleList(customSelector = '') {
   const allArticles = document.querySelectorAll(
     optArticleSelector + customSelector
   );
-  console.log(optArticleSelector + customSelector);
 
   let html = '';
   for (let article of allArticles) {
@@ -79,6 +80,26 @@ function generateTitleList(customSelector = '') {
   }
 }
 generateTitleList();
+
+function calculateTagsParams(tags) {
+  const params = {
+    min: 999999,
+    max: 0,
+  };
+
+  for (let tag in tags) {
+    if (tags[tag] > params.max) {
+      params.max = tags[tag];
+    }
+    if (tags[tag] < params.min) {
+      params.min = tags[tag];
+    }
+  }
+
+  return params;
+}
+
+function calculateTagClass(count, params) {}
 
 function generateTags() {
   /* [NEW] create a new variable allTags with an empty object */
@@ -117,7 +138,6 @@ function generateTags() {
       } else {
         allTags[tag]++;
       }
-      console.log(allTags);
       /* END LOOP: for each tag */
     }
 
@@ -129,13 +149,21 @@ function generateTags() {
   /* [NEW] find list of tags in right column */
   const tagList = document.querySelector(optTagsListSelector);
 
+  const tagParams = calculateTagsParams(allTags);
+  console.log(tagParams);
   /* create variable for all links HTML code */
   let allTagsHTML = '';
+  const tagLinkHTML = calculateTagClass;
   /* START LOOP: for each tag in allTags */
   for (let tag in allTags) {
     allTagsHTML +=
-      '<li><a href="#">' + tag + ' (' + allTags[tag] + ')</a></li>';
-    console.log(allTagsHTML);
+      '<li><a href="#" class="' +
+      calculateTagClass +
+      '">' +
+      tag +
+      ' (' +
+      allTags[tag] +
+      ')</a></li>';
   }
   /* Add html from allTagsHTML to tagList*/
   tagList.innerHTML = allTagsHTML;
@@ -217,7 +245,6 @@ function authorClickHandler(event) {
   const clickedElement = this;
 
   const authorName = clickedElement.getAttribute('href');
-  console.log(authorName);
 
   generateTitleList('[data-author="' + authorName + '"]');
 }
