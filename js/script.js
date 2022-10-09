@@ -33,12 +33,15 @@ function titleClickHandler(event) {
 const optArticleSelector = '.post';
 const optTitleSelector = '.post-title';
 const optTitleListSelector = '.titles';
+const optTitleLinkSelector = '.titles a';
 const optArticleTagsSelector = '.post-tags .list';
 const optAuthorSelector = '.post-author';
 const optArticleAuthorSelector = '.post-author a';
 const optTagsListSelector = '.sidebar .tags';
 let optCloudClassCount = 5;
-let optCloudClassPrefix = 'tag-size-';
+const optCloudClassPrefix = 'tag-size-';
+const optAuthorsListSelector = '.sidebar .authors';
+const optAuthorsLinkSelector = '.sidebar .authors a';
 
 function generateTitleList(customSelector = '') {
   /* remove contents of titleList */
@@ -73,7 +76,7 @@ function generateTitleList(customSelector = '') {
 
   titleList.innerHTML = html;
 
-  const links = document.querySelectorAll('.titles a');
+  const links = document.querySelectorAll(optTitleLinkSelector);
 
   for (let link of links) {
     link.addEventListener('click', titleClickHandler);
@@ -257,6 +260,8 @@ addClickListenersToTags();
 addClickListenersToCloudTags();
 
 function generateAuthors() {
+  const allAuthors = {};
+
   //take all articles
   const articles = document.querySelectorAll(optArticleSelector);
 
@@ -268,6 +273,28 @@ function generateAuthors() {
     //insert link to the wrapper
     const authorWrapper = article.querySelector(optAuthorSelector);
     authorWrapper.innerHTML = authorLink;
+
+    /* [NEW] check if this link is NOT already in allAuthors */
+    if (!allAuthors.hasOwnProperty(authorName)) {
+      /* [NEW] add author to allAuthors object */
+      allAuthors[authorName] = 1;
+    } else {
+      allAuthors[authorName] += 1;
+    }
+  }
+
+  for (let authorName in allAuthors) {
+    const allAuthorsLink =
+      '<li><a href="' +
+      authorName +
+      '">' +
+      authorName +
+      ' (' +
+      allAuthors[authorName] +
+      ')</a></li>';
+
+    const allAuthorsWrapper = document.querySelector(optAuthorsListSelector);
+    allAuthorsWrapper.innerHTML += allAuthorsLink;
   }
 }
 generateAuthors();
@@ -281,11 +308,20 @@ function authorClickHandler(event) {
   generateTitleList('[data-author="' + authorName + '"]');
 }
 
-function addClickListenersToAuthors() {
+function addClickListenersToAuthor() {
   const linksToAuthors = document.querySelectorAll(optArticleAuthorSelector);
   for (let authorLink of linksToAuthors) {
     authorLink.addEventListener('click', authorClickHandler);
   }
 }
 
+function addClickListenersToAuthors() {
+  const linksToAuthors = document.querySelectorAll(optAuthorsLinkSelector);
+  for (let authorLink of linksToAuthors) {
+    authorLink.addEventListener('click', authorClickHandler);
+    console.log(authorLink);
+  }
+}
+
+addClickListenersToAuthor();
 addClickListenersToAuthors();
