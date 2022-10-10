@@ -1,5 +1,3 @@
-'use strict';
-
 const templates = {
   articleLink: Handlebars.compile(
     document.querySelector('#template-article-link').innerHTML
@@ -121,7 +119,6 @@ function calculateTagsParams(tags) {
 
 function calculateTagClass(count, params) {
   const percentValue = (count * 100) / params.max;
-  console.log(percentValue);
 
   if (percentValue < 20) {
     optCloudClassCount = 1;
@@ -202,7 +199,6 @@ function generateTags() {
   }
   /* Add html from allTagsHTML to tagList*/
   tagList.innerHTML = templates.tagCloudLink(allTagsData);
-  console.log(allTagsData);
 }
 
 generateTags();
@@ -330,7 +326,6 @@ function addClickListenersToAuthors() {
   const linksToAuthors = document.querySelectorAll(opts.authorsLinkSelector);
   for (let authorLink of linksToAuthors) {
     authorLink.addEventListener('click', authorClickHandler);
-    console.log(authorLink);
   }
 }
 
